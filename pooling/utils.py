@@ -26,6 +26,7 @@ def train_model(model, criterion, optimizer, scheduler, data, device, folder_nam
 
         # Each epoch has a training and validation phase
         for phase in ['train', 'val']:
+            
             if phase == 'train':
                 model.train()  # Set model to training mode
             else:
@@ -40,6 +41,8 @@ def train_model(model, criterion, optimizer, scheduler, data, device, folder_nam
 #             for batch in range(5):
 
                 inputs, labels = data.load_data(batch, phase)
+                    
+#                 print(inputs, labels)
                 
 #                 print(labels)
                 
@@ -55,9 +58,12 @@ def train_model(model, criterion, optimizer, scheduler, data, device, folder_nam
                 # forward
                 # track history if only in train
                 with torch.set_grad_enabled(phase == 'train'):
+                    
                     outputs = model(inputs)
 #                     _, preds = torch.max(outputs, 1)
                     loss = criterion(outputs, labels.view(-1, 1))
+    
+                    loss = torch.nan_to_num(loss, 0)
                     
 #                     print(outputs, loss)
 # #                     
@@ -70,6 +76,7 @@ def train_model(model, criterion, optimizer, scheduler, data, device, folder_nam
 
                 # statistics
                 running_loss += loss.item() * inputs.size(0)
+#                 print(running_loss, loss, data.get_num(phase))
 #                 running_corrects += torch.sum(preds == labels.data)
                 
             if phase == 'train':
@@ -106,3 +113,4 @@ def train_model(model, criterion, optimizer, scheduler, data, device, folder_nam
     # load best model weights
     model.load_state_dict(best_model_wts)
     return model
+

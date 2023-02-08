@@ -2,3 +2,8 @@
 *model*
 *data*
 *.shp
+*.torch
+domains_by_lc/__pycache__/
+domains_by_lc/.ipynb_checkpoints/
+.ipynb_checkpoints/
+domains_by_lc/figures/.ipynb_checkpoints/

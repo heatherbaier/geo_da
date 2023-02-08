@@ -27,8 +27,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     records_dir = args.folder_name  
-#     os.mkdir(records_dir)
-#     os.mkdir(os.path.join(records_dir, "models"))        
+    os.mkdir(records_dir)
+    os.mkdir(os.path.join(records_dir, "models"))        
 
     chlp = "../dimagery/tan/"
     crip = "../dimagery/phl/"
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     image_names = [chlp + _ for _ in os.listdir(chlp)] + [crip + _ for _ in os.listdir(crip)] + [ecup + _ for _ in os.listdir(ecup)]
 
-    data = Dataloader(image_names, "../../da_gan/data/data_for_gan.csv", records_dir, batch_size = 32)
+    data = Dataloader(image_names, "../../da_gan/data/data_for_gan.csv", records_dir, batch_size = 4)
 
 #     adgsa
     
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     model_ft.fc = nn.Linear(num_ftrs, 1)
     model_ft = model_ft.to(device)
     criterion = nn.L1Loss()
-    optimizer_ft = torch.optim.SGD(model_ft.parameters(), lr=0.0001, momentum=0.9)
+    optimizer_ft = torch.optim.Adam(model_ft.parameters(), lr=0.0001)
     exp_lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)    
     
     train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, data, device, os.path.join(records_dir, "models"), num_epochs = 50)
